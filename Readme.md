@@ -109,7 +109,7 @@ We finally define an "**output directory**" and then press "**Compute**" to run 
 
 You will be continuously updated on the progress in the console window at the bottom of the CloudCompare user interface (marked in Fig. 7).
 
-![Figure 7: Progress of the 3DFin work-flow in the console window](figures/07.png)
+![Figure 7: Progress of the 3DFin work-flow in the console window](figures/Fig_07.png)
 **Figure 7: Progress of the 3DFin work-flow in the console window.**
 
 Running 3DFin on a point cloud can take anything from a few seconds up to several minutes depending on the size of the point cloud, the user-defined settings and the hardware. Typically, very long processing times (several hours) are not expected, since the process is limited by the available memory: too large datasets cannot be processed in the current version of the software. With the example dataset used in this Tutorial the processing time is approximately 5-10 min with a laptop with good (but not top-notch) performance (16 GB RAM, Intel i7 or similar).
@@ -126,7 +126,7 @@ Next, we will have a look at each of the outputs individually, which will be hel
 
 The first step in workflow is to normalize the point cloud and derive a digital terrain model (DTM). Fig. 9 shows the visualization of the DTM fitted to the example dataset. In this case the extracted DTM looks quite plausible. There might be other situation where the automatically derived DTM is not of sufficient quality. We will have a look at this issue in one of the cases explained later (Case I).
 
-![Figure 9: DTM derived in the 3DFin workflow](figures/Fig_9_dtm.png)
+![Figure 9: DTM derived in the 3DFin workflow](figures/Fig_09_dtm.png)
 
 **Figure 9: DTM derived in the 3DFin workflow.**
 
@@ -148,7 +148,7 @@ The axes (in Fig. 11) are color-coded according to their tilting angle and you c
 
 Similarly, fitted circles that show unexpected dimensions (for example a notably larger radius than the circle below) or locations are displayed in red. Most of the time these problematic circles should not be considered during subsequent processing step since it is actually quite rare that for example a tree will increase its diameter (notably) with height or that the stem shape deviates notably from a vertically continuous cylinder-like form. Some information related to the circle fitting quality is also stored in the tabular output data that we will discuss further below in the Tutorial.
 
-![Figure 13: Distance axes](figures/13_distance_axis.png)
+![Figure 13: Distance axes](figures/Fig_13_distance_axis.png)
 
 **Figure 13: Distance axes.**
 
@@ -162,7 +162,7 @@ In Fig. 14 the height of each detected tree is displayed. The height is defined 
 
 Finally, in Fig. 15, the diameter at breast height (DBH) of each tree is shown. The diameter at breast height is interpolated from the diameters of the fitted circles (Fig. 12) above and below the DBH height of 1.3. In case there are no high-quality fitted circles available within a certain range above and below the 1.3 m position, the workflow will set the DBH of this tree to "non-reliable" instead of providing a diameter estimate.
 
-![Figure 15: Tree DBH](figures/Fig_15_tree_locationspng.png)
+![Figure 15: Tree DBH](figures/Fig_15_tree_locations.png)
 
 **Figure 15: Tree DBH.**
 
@@ -190,7 +190,7 @@ On the first sheet called "Plot Metrics" you find the total height (TH), the dia
 *Diameters*
 In the diameters sheet you can find diameter of all stem section (columns) of all trees (rows) (Fig. 18). The number of stem sections varies based on the height of the trees and you will see that as a consequence typically all trees will have several fields with 0 diameter in some higher stem section columns in the table.
 
-![Figure 18: Diameter sheet](figures/18_excel2.png)
+![Figure 18: Diameter sheet](figures/Fig_18_excel2.png)
 
 **Figure 18: Diameter sheet.**
 
