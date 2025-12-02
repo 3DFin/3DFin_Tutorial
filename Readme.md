@@ -40,6 +40,7 @@ It is a terrestrial point cloud from a pine stand (*Pinus sylvestris*) in a fore
 This should lead to a situation as shown in Fig. 1.
 
 ![Figure 1: CloudCompare with 3DFin extension installed](figures/Fig_01.png)
+
 **Figure 1: CloudCompare with 3DFin extension installed.**
 
 Your actual view is likely to appear a bit different since you might have other and additional toolbars activated. You might have to press on a little arrow-button on the top right of the menu bar to be able to see the relevant icons which are marked in Fig. 1.
@@ -65,6 +66,7 @@ This should result in a situation as shown in Fig. 5:
 
 
 ![Figure 5: CloudCompare view after loading the example dataset](figures/Fig_05.png)
+
 **Figure 5: CloudCompare view after loading the example dataset.**
 
 If you want to adjust some basic visualization settings of the point cloud you can get some first indications on how to achieve this in the following tutorial:
@@ -91,8 +93,7 @@ The basic tab provides only a few fundamental parameters that can be modified if
 - **Stripe Upper Limit** (marked with 4 in Fig. 6): As further explained below, the first step in the 3DFin work-flow bases on the identification of tree segments in the lower part of the forest stand. The idea for the two stripe parameters is to define a height range (referring to the height above ground) in which the trees stems are expected to be clearly visible. That is, understory elements (shrubs, herbs, grasses) and branches should **in ideal case** not be very dense and particularly they should not directly "connect" neighboring tree stems (that is, there should be as few as possible situation where connected point clouds reach from one tree stem to a neighboring tree stem). However, as explained below, 3DFin is also able to clean possible understorey and/or branches that could be present in the defined height range/stripe. You can define the upper and lower limit of the height range/stripe depending on the situation of the understory and the trees in your forest. A graphical example is provided to further clarify the idea (see graph marked with 4a in Fig. 6). Note that the height range/stripe defined by the upper and lower limit of the stripe ***should not be too small*** since very short tree segments increase the risk that the orientation of the segment is less representative for the orientation of the whole stem (see explanations with respect to stem axes below and Fig. 11) which is derived from the segments identified in this height range/stripe.
 - **Stripe Lower Limit** (marked with 4 in Fig. 6): See Stripe Upper Limit.
 - **Pruning Intensity** (marked with 5 in Fig. 6): During this step, points that are connected to the tree stems but belong to other tree elements (such as branches, leaves and/or understory) are iteratively deleted. Depending on how many of such other elements exist, you can adjust the numbers of iterations and thereby the intensity with which the algorithms tries to identify and drop such features. A value of 2 is recommended for most situations. Although in very clean forest plots and/or point clouds that are not noisy values of 0 (no pruning) or 1 could be used to reduce processing time. Higher values are preferable in cases where the trees have a large number of low branches, dense understory or in especially noisy point clouds. However, applying higher pruning intensities may lead to the elimination of stem fractions which were covered with low number of points. Note that pruning is performed twice: first during the stem identification within the stripe, and later during the whole stem extraction (some more details will be provided below).
-- **Cloth resolution** (marked with 6 in Fig. 6):
-3DFin uses a Cloth Simulation Filter (CSF) to generate a Digital Terrain Model (DTM). This DTM will then be used to normalize the height of every point in the point cloud with respect to it. [Case I - adjusting DTM interpolation settings](https://github.com/3DFin/3DFin_Tutorial?tab=readme-ov-file#case-i---adjusting-dtm-interpolation-settings) covers in detail the usage of this parameter.
+- **Cloth resolution** (marked with 6 in Fig. 6): 3DFin uses a Cloth Simulation Filter (CSF) to generate a Digital Terrain Model (DTM). This DTM will then be used to normalize the height of every point in the point cloud with respect to it. [Case I - adjusting DTM interpolation settings](https://github.com/3DFin/3DFin_Tutorial?tab=readme-ov-file#case-i---adjusting-dtm-interpolation-settings) covers in detail the usage of this parameter.
 - **Output Directory** (marked with 7 in Fig. 6): Define the output directory to where you want to save the outputs created by the 3DFin work-flow.
 
 We will now run the 3DFin workflow for our dataset. For the general settings we **check** the "**Normalize Point Cloud**" box since our example dataset does not contain a normalized point cloud.
@@ -109,7 +110,8 @@ We finally define an "**output directory**" and then press "**Compute**" to run 
 
 You will be continuously updated on the progress in the console window at the bottom of the CloudCompare user interface (marked in Fig. 7).
 
-![Figure 7: Progress of the 3DFin work-flow in the console window](figures/07.png)
+![Figure 7: Progress of the 3DFin work-flow in the console window](figures/Fig_07.png)
+
 **Figure 7: Progress of the 3DFin work-flow in the console window.**
 
 Running 3DFin on a point cloud can take anything from a few seconds up to several minutes depending on the size of the point cloud, the user-defined settings and the hardware. Typically, very long processing times (several hours) are not expected, since the process is limited by the available memory: too large datasets cannot be processed in the current version of the software. With the example dataset used in this Tutorial the processing time is approximately 5-10 min with a laptop with good (but not top-notch) performance (16 GB RAM, Intel i7 or similar).
@@ -126,13 +128,14 @@ Next, we will have a look at each of the outputs individually, which will be hel
 
 The first step in workflow is to normalize the point cloud and derive a digital terrain model (DTM). Fig. 9 shows the visualization of the DTM fitted to the example dataset. In this case the extracted DTM looks quite plausible. There might be other situation where the automatically derived DTM is not of sufficient quality. We will have a look at this issue in one of the cases explained later (Case I).
 
-![Figure 9: DTM derived in the 3DFin workflow](figures/Fig_9_dtm.png)
+![Figure 9: DTM derived in the 3DFin workflow](figures/Fig_09_dtm.png)
 
 **Figure 9: DTM derived in the 3DFin workflow.**
 
 In Fig. 10, we can see the identified tree segments from the second step of the 3DFin workflow. Clusters of points showing a vertical continuity are identified in the user-defined height range (see stripe range setting above). In our case, all of these tree segments will be displayed for the height between 1.5 m and 4.5 m.
 
 ![Figure 10: Tree segments identified by the 3DFin workflow](figures/Fig_10_stem_segments.png)
+
 **Figure 10: Tree segments identified by the 3DFin workflow.**
 
 As next step in the workflow an axis is fitted through the centers of the tree section discs shown in Fig. 10. This step is accomplished by deriving the 1st axis of a Principal Component Analysis using the 3D-positions of the identified tree stem section centers as input. These fitted axes are then used as orientation for the circle-fitting algorithm. That is, along this axes, the algorithm will search for circular shapes, representing points reflected by the tree stem, within a circular buffer with a (optionally user-defined) fixed radius around the axis.  This step will repeated in regular (optionally user-defined) height intervals. The axes for our example dataset are shown in Fig. 11 and the respective circle fitting output is shown in Fig. 12.
@@ -144,11 +147,12 @@ As next step in the workflow an axis is fitted through the centers of the tree s
 The axes (in Fig. 11) are color-coded according to their tilting angle and you can see that axes that show a higher tilting relative to the other trees (that is, deviating notably from the average vertical orientation of a tree stems in the dataset) are shown in red. This is not necessarily an indicator for wrongly identified tree stems as trees sometimes are leaning but it might be a good idea to visually re-examine such trees by comparing the identified stem sections with the point cloud.
 
 ![Figure 12: Circles fitted around the expected tree trunk as guided by the axes shown in Fig. 11](figures/Fig_12_fitted_sections.png)
+
 **Figure 12: Circles fitted around the expected tree trunk as guided by the axes shown in Fig. 11.**
 
 Similarly, fitted circles that show unexpected dimensions (for example a notably larger radius than the circle below) or locations are displayed in red. Most of the time these problematic circles should not be considered during subsequent processing step since it is actually quite rare that for example a tree will increase its diameter (notably) with height or that the stem shape deviates notably from a vertically continuous cylinder-like form. Some information related to the circle fitting quality is also stored in the tabular output data that we will discuss further below in the Tutorial.
 
-![Figure 13: Distance axes](figures/13_distance_axis.png)
+![Figure 13: Distance axes](figures/Fig_13_distance_axis.png)
 
 **Figure 13: Distance axes.**
 
@@ -162,7 +166,7 @@ In Fig. 14 the height of each detected tree is displayed. The height is defined 
 
 Finally, in Fig. 15, the diameter at breast height (DBH) of each tree is shown. The diameter at breast height is interpolated from the diameters of the fitted circles (Fig. 12) above and below the DBH height of 1.3. In case there are no high-quality fitted circles available within a certain range above and below the 1.3 m position, the workflow will set the DBH of this tree to "non-reliable" instead of providing a diameter estimate.
 
-![Figure 15: Tree DBH](figures/Fig_15_tree_locationspng.png)
+![Figure 15: Tree DBH](figures/Fig_15_tree_locations.png)
 
 **Figure 15: Tree DBH.**
 
@@ -185,16 +189,19 @@ As first step, browse to the output folder which you defined in the CloudCompare
 As you can see there are in total 9 separate sheets (marked with 1 in Fig. 17) that contain all relevant results created by the 3DFin work-flow. In the following we will briefly explain the contents of each sheet.
 
 *Plot Metrics*
+
 On the first sheet called "Plot Metrics" you find the total height (TH), the diameter at breast height (DBH) as well as the x-position (X) and y-position (Y) of each tree (T) identified in the point cloud (marked with 2 and 3 in Fig. 17). In our example 30 trees were identified
 
 *Diameters*
+
 In the diameters sheet you can find diameter of all stem section (columns) of all trees (rows) (Fig. 18). The number of stem sections varies based on the height of the trees and you will see that as a consequence typically all trees will have several fields with 0 diameter in some higher stem section columns in the table.
 
-![Figure 18: Diameter sheet](figures/18_excel2.png)
+![Figure 18: Diameter sheet](figures/Fig_18_excel2.png)
 
 **Figure 18: Diameter sheet.**
 
 *X*
+
 The X sheet contains the x-coordinates of the center points of all stem sections (columns) of all trees (rows) (Fig. 19).
 
 ![Figure 19: X sheet](figures/Fig_19_excel3.png)
@@ -202,9 +209,11 @@ The X sheet contains the x-coordinates of the center points of all stem sections
 **Figure 19: X sheet.**
 
 *Y*
+
 The Y sheet contains the y-coordinates of the center points of all stem sections (columns) of all trees (rows)
 
 *Sections*
+
 The Sections sheet shows the heights for which stem sections were determined (Fig. 20). These values depend on the user-defined lowest section height and the selected height-interval. These values are the same for all trees an are hence only displayed once.
 
 ![Figure 20: Sections sheet](figures/Fig_20_excel4.png)
@@ -212,6 +221,7 @@ The Sections sheet shows the heights for which stem sections were determined (Fi
 **Figure 20: Sections sheet.**
 
 *Quality sheets*
+
 The next four sheets contain information on the quality of each stem section. The first of the four quality sheets named *Q(Overall Quality 0-1)* is a binary summary of the other three quality sheet named *Q1(Outlier Probability)*, *Q2(Sector Occupancy)* and *Q3(Points Inner Circle)*
 
 The  *Q1(Outlier Probability)* sheet contains a number for each stem segment of each trees  which indicates how likely it is that an identified segment is actually not part of the tree stem (as represented by all other tree segments of the same tree) (Fig. 21).  The higher the value, the more likely that the given section is an outlier. 
@@ -294,11 +304,12 @@ A visualization of the dataset after loading it to CloudCompare can be seen in F
 If you **download the dataset** and then run the 3DFin work-flow (either with the standard settings or slightly adapting the basic parameters) you'll encounter something like this:
 
 ![Figure 28: Standard outputs of the 3Dfin workflow applied to the MLS dataset ](figures/Fig_28.png)
+
 **Figure 28: Standard outputs of the 3Dfin workflow applied to the MLS dataset.**
 
 (A minimum height of 1.2 m and a maximum height of 4.2 m were selected. Other parameters were left untouched).
 
- We can see that there is a quite high number of trees where the DBH estimate is not available because the workflow reported that the estimates are not reliable. At the same time quite a few stem sections are marked in red which indicates potential outliers that do not belong to the tree stem.
+We can see that there is a quite high number of trees where the DBH estimate is not available because the workflow reported that the estimates are not reliable. At the same time quite a few stem sections are marked in red which indicates potential outliers that do not belong to the tree stem.
 
 So the results seem to be not as good as we have observed for the first dataset. Let us explore some more what the reason for this could be. If we have a look at only the DTM (Fig. 29) we can see that there are some odd-looking parts in the DTM (marked in red in Fig. 29). 
 
@@ -332,6 +343,7 @@ For this, we restart the 3DFin workflow and use the exactly same basic settings 
 The DTM obtained with these new settings looks notably better than the outputs of the first run. In a transect view (Fig. 33) it is nicely visible that the terrain model now smoothly follows the shape of the ground shown in the original point cloud.
 
 ![Figure 33: The DTM now matches the point cloud nicely.](figures/Fig_33.png)
+
 **Figure 33: The DTM now matches the point cloud nicely.**
 
 We furthermore can see in the console outputs as well as in the tabular output data that the number of detected trees has increased from 57 to 70. A visual screening confirms that all trees have now been detected (Fig. 34). 
